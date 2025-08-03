@@ -1,6 +1,5 @@
 #pragma warning disable IL2026, IL3050
 
-using Microsoft.AspNetCore.Http.HttpResults;
 using Mscc.GenerativeAI;
 using Scalar.AspNetCore;
 
@@ -30,21 +29,23 @@ if (app.Environment.IsDevelopment()) {
     app.MapScalarApiReference();
 }
 
-app.MapPost("/v1/projects/{project}/locations/{region}/publishers/google/models/{model}:generateContent", async Task<Ok<List<GenerateContentResponse>>> (string project, string region, string model, GenerateContentRequest request) => {
+app.MapPost("/v1/projects/{project}/locations/{region}/publishers/google/models/{model}:generateContent", async (string project, string region, string model, GenerateContentRequest request) => {
         var vertexAi = new VertexAI(project, region: region);
         var client = vertexAi.GenerativeModel(model);
         var result = await client.GenerateContent(request);
-        return TypedResults.Ok(new List<GenerateContentResponse> { result });
+        return new List<GenerateContentResponse> { result };
     })
     .WithName("GenerateContent")
-    .WithDescription("Generate content from a model");
+    .WithDescription("Generate content from a model")
+    .Produces<List<GenerateContentResponse>>();
 
-app.MapPost("/v1/projects/{project}/locations/{region}/publishers/google/models/{model}:streamGenerateContent", Ok<IAsyncEnumerable<GenerateContentResponse>> (string project, string region, string model, GenerateContentRequest request) => {
+app.MapPost("/v1/projects/{project}/locations/{region}/publishers/google/models/{model}:streamGenerateContent", (string project, string region, string model, GenerateContentRequest request) => {
         var vertexAi = new VertexAI(project, region: region);
         var client = vertexAi.GenerativeModel(model);
-        return TypedResults.Ok(client.GenerateContentStream(request));
+        return client.GenerateContentStream(request);
     })
     .WithName("StreamGenerateContent")
-    .WithDescription("Generate content from a model in streaming mode");
+    .WithDescription("Generate content from a model in streaming mode")
+    .Produces<IAsyncEnumerable<GenerateContentResponse>>();
 
 app.Run();
