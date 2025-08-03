@@ -1,12 +1,22 @@
 using Mscc.GenerativeAI;
 using Scalar.AspNetCore;
-using Vecerdi.VertexAIProxy.Service;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
-builder.Services.ConfigureHttpJsonOptions(options
-    => options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default));
-BaseModel.ConfigureJsonSerializerOptions = options => options.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+builder.Services.ConfigureHttpJsonOptions(options => {
+    var referenceOptions = BaseModel.DefaultJsonSerializerOptions();
+    options.SerializerOptions.WriteIndented = referenceOptions.WriteIndented;
+    options.SerializerOptions.DefaultIgnoreCondition = referenceOptions.DefaultIgnoreCondition;
+    options.SerializerOptions.PropertyNamingPolicy = referenceOptions.PropertyNamingPolicy;
+    options.SerializerOptions.DictionaryKeyPolicy = referenceOptions.DictionaryKeyPolicy;
+    options.SerializerOptions.NumberHandling = referenceOptions.NumberHandling;
+    options.SerializerOptions.PropertyNameCaseInsensitive = referenceOptions.PropertyNameCaseInsensitive;
+    options.SerializerOptions.ReadCommentHandling = referenceOptions.ReadCommentHandling;
+    options.SerializerOptions.AllowTrailingCommas = referenceOptions.AllowTrailingCommas;
+    options.SerializerOptions.UnmappedMemberHandling = referenceOptions.UnmappedMemberHandling;
+    options.SerializerOptions.RespectNullableAnnotations = referenceOptions.RespectNullableAnnotations;
+    options.SerializerOptions.TypeInfoResolverChain.Insert(0, new GenerativeJsonSerializerContext());
+});
 
 builder.Services.AddOpenApi();
 

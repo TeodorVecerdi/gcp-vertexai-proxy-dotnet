@@ -35,6 +35,7 @@ namespace Mscc.GenerativeAI
         /// Optional. The id of the function call this response is for.
         /// Populated by the client to match the corresponding function call `id`.
         /// </summary>
+        [JsonIgnore]
         public string? Id { get; set; }
 
         /// <summary>

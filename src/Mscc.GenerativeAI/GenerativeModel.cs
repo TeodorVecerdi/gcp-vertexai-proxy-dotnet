@@ -974,10 +974,9 @@ namespace Mscc.GenerativeAI
 
             if (_useVertexAi && !_useVertexAiExpress)
             {
-                var fullText = new StringBuilder();
-                GroundingMetadata? groundingMetadata = null;
                 var contents = await Deserialize<List<GenerateContentResponse>>(response);
-                foreach (var content in contents)
+                return contents.Merge();
+                /*foreach (var content in contents)
                 {
                     if (!(content.Candidates?[0].GroundingMetadata is null))
                     {
@@ -1003,7 +1002,7 @@ namespace Mscc.GenerativeAI
                 ];
                 result.Candidates[0].GroundingMetadata = groundingMetadata;
                 result.Candidates[0].Content.Parts[0].Text = fullText.ToString();
-                return result;
+                return result;*/
             }
             return await Deserialize<GenerateContentResponse>(response);
         }
@@ -1144,7 +1143,7 @@ namespace Mscc.GenerativeAI
             // Ref: https://www.stevejgordon.co.uk/using-httpcompletionoption-responseheadersread-to-improve-httpclient-performance-dotnet
             var ms = new MemoryStream();
 
-            await JsonSerializer.SerializeAsync(ms, request, WriteOptions, cancellationToken);
+            await JsonSerializer.SerializeAsync(ms, request, Options, cancellationToken);
             ms.Seek(0, SeekOrigin.Begin);
             
             using var httpRequest = new HttpRequestMessage(HttpMethod.Post, url);
@@ -1166,7 +1165,7 @@ namespace Mscc.GenerativeAI
                 // Ref: https://github.com/dotnet/runtime/issues/97128 - HttpIOException
                 // https://github.com/grpc/grpc-dotnet/issues/2361#issuecomment-1895805167 
                 await foreach (var item in JsonSerializer.DeserializeAsyncEnumerable<GenerateContentResponse>(
-                                   stream, ReadOptions, cancellationToken))
+                                   stream, Options, cancellationToken))
                 {
                     if (cancellationToken.IsCancellationRequested)
                         yield break;
@@ -1281,7 +1280,7 @@ namespace Mscc.GenerativeAI
                         continue;
                             
                     var item = JsonSerializer.Deserialize<GenerateContentResponse>(
-                        data.Substring("data:".Length).Trim(), ReadOptions);
+                        data.Substring("data:".Length).Trim(), Options);
                     if (cancellationToken.IsCancellationRequested)
                         yield break;
                     yield return item;

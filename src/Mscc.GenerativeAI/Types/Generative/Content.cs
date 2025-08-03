@@ -117,7 +117,7 @@ namespace Mscc.GenerativeAI
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentResponse"/> class.
         /// </summary>
-        internal ContentResponse() => Parts = [];
+        public ContentResponse() => Parts = [];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentResponse"/> class.

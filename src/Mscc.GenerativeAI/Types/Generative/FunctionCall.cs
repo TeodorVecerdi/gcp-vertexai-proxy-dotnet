@@ -27,6 +27,7 @@ namespace Mscc.GenerativeAI
         /// Optional. The unique id of the function call.
         /// If populated, the client to execute the `function_call` and return the response with the matching `id`.
         /// </summary>
+        [JsonIgnore]
         public string? Id { get; set; }
     }
 }
