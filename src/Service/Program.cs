@@ -16,17 +16,25 @@ if (app.Environment.IsDevelopment()) {
     app.MapScalarApiReference();
 }
 
-app.MapGet("/", () => "Hello World!");
-app.MapGet("/{name}", (string name) => $"Hello {name}!");
+app.MapGet("/", GetNames)
+    .WithName("GetNames")
+    .WithDescription("Get all names");
+app.MapGet("/{name}", (string name) => $"Hello, {name}!")
+    .WithName("Greet")
+    .WithDescription("Say hello to a name");
 
-// var todosApi = app.MapGroup("/todos");
-// todosApi.MapGet("/", () => sampleTodos)
-//     .WithName("GetTodos");
-//
-// todosApi.MapGet("/{id}", Results<Ok<Todo>, NotFound> (int id) =>
-//         sampleTodos.FirstOrDefault(a => a.Id == id) is { } todo
-//             ? TypedResults.Ok(todo)
-//             : TypedResults.NotFound())
-//     .WithName("GetTodoById");
+// app.MapGet("/{id}", Results<Ok<Todo>, NotFound> (int id) =>
+//       sampleTodos.FirstOrDefault(a => a.Id == id) is { } todo
+//           ? TypedResults.Ok(todo)
+//           : TypedResults.NotFound())
+//   .WithName("GetTodoById");
 
 app.Run();
+return;
+
+static async IAsyncEnumerable<string> GetNames() {
+    await Task.CompletedTask;
+    yield return "John";
+    yield return "Jane";
+    yield return "Bob";
+}

@@ -2,5 +2,5 @@
 
 namespace Vecerdi.VertexAIProxy.Service;
 
-[JsonSerializable(typeof(string))]
+[JsonSerializable(typeof(IAsyncEnumerable<string>))]
 internal partial class AppJsonSerializerContext : JsonSerializerContext { }
