@@ -89,7 +89,7 @@ namespace Mscc.GenerativeAI
             GenerationConfig? generationConfig = null,
             List<SafetySetting>? safetySettings = null,
             List<Tool>? tools = null,
-            ToolConfig? toolConfig = null, 
+            ToolConfig? toolConfig = null,
             CancellationToken cancellationToken = default)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
@@ -98,7 +98,7 @@ namespace Mscc.GenerativeAI
             generationConfig ??= _generationConfig;
             if (generationConfig?.CandidateCount > 1)
                 throw new ValueErrorException("Can't chat with `CandidateCount > 1`");
-            
+
             _lastSent = new ContentResponse { Role = Role.User, Parts = request.Contents[0].Parts! };
             History.Add(_lastSent);
 
@@ -111,7 +111,7 @@ namespace Mscc.GenerativeAI
             request.ToolConfig ??= toolConfig;
 
             var response = await _model.GenerateContent(request, cancellationToken: cancellationToken);
-            
+
             response.CheckResponse();
 
             if (_enableAutomaticFunctionCalling)
@@ -122,7 +122,7 @@ namespace Mscc.GenerativeAI
                     safetySettings ?? _safetySettings,
                     _tools);
             }
-            
+
             _lastReceived = new() { Role = Role.Model, Parts = response.Candidates[0].Content.Parts };
             History.Add(_lastReceived);
             return response;
@@ -144,14 +144,14 @@ namespace Mscc.GenerativeAI
             GenerationConfig? generationConfig = null,
             List<SafetySetting>? safetySettings = null,
             List<Tool>? tools = null,
-            ToolConfig? toolConfig = null, 
+            ToolConfig? toolConfig = null,
             CancellationToken cancellationToken = default)
         {
             if (prompt == null) throw new ArgumentNullException(nameof(prompt));
 
-            var request = new GenerateContentRequest(prompt, 
-                generationConfig ?? _generationConfig, 
-                safetySettings ?? _safetySettings, 
+            var request = new GenerateContentRequest(prompt,
+                generationConfig ?? _generationConfig,
+                safetySettings ?? _safetySettings,
                 tools ?? _tools,
                 toolConfig: toolConfig);
             return await SendMessage(request, cancellationToken: cancellationToken);
@@ -173,14 +173,14 @@ namespace Mscc.GenerativeAI
             GenerationConfig? generationConfig = null,
             List<SafetySetting>? safetySettings = null,
             List<Tool>? tools = null,
-            ToolConfig? toolConfig = null, 
+            ToolConfig? toolConfig = null,
             CancellationToken cancellationToken = default)
         {
             if (parts == null) throw new ArgumentNullException(nameof(parts));
-            
-            var request = new GenerateContentRequest(parts, 
-                generationConfig ?? _generationConfig, 
-                safetySettings ?? _safetySettings, 
+
+            var request = new GenerateContentRequest(parts,
+                generationConfig ?? _generationConfig,
+                safetySettings ?? _safetySettings,
                 tools ?? _tools,
                 toolConfig: toolConfig);
             return await SendMessage(request, cancellationToken: cancellationToken);
@@ -191,7 +191,7 @@ namespace Mscc.GenerativeAI
             GenerationConfig? generationConfig = null,
             List<SafetySetting>? safetySettings = null,
             List<Tool>? tools = null,
-            ToolConfig? toolConfig = null, 
+            ToolConfig? toolConfig = null,
             CancellationToken cancellationToken = default)
         {
             if (content == null) throw new ArgumentNullException(nameof(content));
@@ -207,6 +207,7 @@ namespace Mscc.GenerativeAI
             {
                 parts.Add(new Part { Text = prompt });
             }
+
             if (content is List<Part> contentParts)
             {
                 // role = Role.Function;
@@ -215,7 +216,7 @@ namespace Mscc.GenerativeAI
 
             _lastSent = new ContentResponse { Role = role, Parts = parts };
             History.Add(_lastSent);
-            
+
             var request = new GenerateContentRequest
             {
                 Contents = History.Select(x =>
@@ -228,7 +229,7 @@ namespace Mscc.GenerativeAI
             };
 
             var response = await _model.GenerateContent(request, cancellationToken: cancellationToken);
-            
+
             response.CheckResponse();
 
             if (_enableAutomaticFunctionCalling)
@@ -239,7 +240,7 @@ namespace Mscc.GenerativeAI
                     safetySettings ?? _safetySettings,
                     _tools);
             }
-            
+
             _lastReceived = new() { Role = Role.Model, Text = response.Text ?? string.Empty };
             History.Add(_lastReceived);
             return response;
@@ -263,7 +264,7 @@ namespace Mscc.GenerativeAI
             GenerationConfig? generationConfig = null,
             List<SafetySetting>? safetySettings = null,
             List<Tool>? tools = null,
-            ToolConfig? toolConfig = null, 
+            ToolConfig? toolConfig = null,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
@@ -272,7 +273,7 @@ namespace Mscc.GenerativeAI
             generationConfig ??= _generationConfig;
             if (generationConfig?.CandidateCount > 1)
                 throw new ValueErrorException("Can't chat with `CandidateCount > 1`");
-            
+
             _lastSent = new ContentResponse { Role = Role.User, Parts = request.Contents[0].Parts! };
             History.Add(_lastSent);
 
@@ -285,7 +286,7 @@ namespace Mscc.GenerativeAI
             request.ToolConfig ??= toolConfig;
 
             var fullText = new StringBuilder();
-            var response = _model.GenerateContentStream(request, cancellationToken:cancellationToken);
+            var response = _model.GenerateContentStream(request, cancellationToken: cancellationToken);
             await foreach (var item in response)
             {
                 item.CheckResponse(true);
@@ -296,6 +297,7 @@ namespace Mscc.GenerativeAI
                 fullText.Append(item.Text);
                 yield return item;
             }
+
             _lastReceived = new() { Role = Role.Model, Text = fullText.ToString() };
             History.Add(_lastReceived);
         }
@@ -316,14 +318,14 @@ namespace Mscc.GenerativeAI
             GenerationConfig? generationConfig = null,
             List<SafetySetting>? safetySettings = null,
             List<Tool>? tools = null,
-            ToolConfig? toolConfig = null, 
+            ToolConfig? toolConfig = null,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             if (prompt == null) throw new ArgumentNullException(nameof(prompt));
 
-            var request = new GenerateContentRequest(prompt, 
-                generationConfig ?? _generationConfig, 
-                safetySettings ?? _safetySettings, 
+            var request = new GenerateContentRequest(prompt,
+                generationConfig ?? _generationConfig,
+                safetySettings ?? _safetySettings,
                 tools ?? _tools,
                 toolConfig: toolConfig);
             await foreach (var response in SendMessageStream(request, cancellationToken: cancellationToken))
@@ -348,14 +350,14 @@ namespace Mscc.GenerativeAI
             GenerationConfig? generationConfig = null,
             List<SafetySetting>? safetySettings = null,
             List<Tool>? tools = null,
-            ToolConfig? toolConfig = null, 
+            ToolConfig? toolConfig = null,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             if (parts == null) throw new ArgumentNullException(nameof(parts));
 
-            var request = new GenerateContentRequest(parts, 
-                generationConfig ?? _generationConfig, 
-                safetySettings ?? _safetySettings, 
+            var request = new GenerateContentRequest(parts,
+                generationConfig ?? _generationConfig,
+                safetySettings ?? _safetySettings,
                 tools ?? _tools,
                 toolConfig: toolConfig);
             await foreach (var response in SendMessageStream(request, cancellationToken: cancellationToken))
@@ -369,7 +371,7 @@ namespace Mscc.GenerativeAI
             GenerationConfig? generationConfig = null,
             List<SafetySetting>? safetySettings = null,
             List<Tool>? tools = null,
-            ToolConfig? toolConfig = null, 
+            ToolConfig? toolConfig = null,
             [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             if (content == null) throw new ArgumentNullException(nameof(content));
@@ -386,6 +388,7 @@ namespace Mscc.GenerativeAI
                 role = Role.User;
                 parts.Add(new Part { Text = prompt });
             }
+
             if (content is List<Part> contentParts)
             {
                 role = Role.Function;
@@ -396,7 +399,7 @@ namespace Mscc.GenerativeAI
             History.Add(_lastSent);
             var request = new GenerateContentRequest
             {
-                Contents = History.Select(x => 
+                Contents = History.Select(x =>
                     new Content { Role = x.Role, Parts = x.Parts }
                 ).ToList(),
                 GenerationConfig = generationConfig ?? _generationConfig,
@@ -406,7 +409,7 @@ namespace Mscc.GenerativeAI
             };
 
             var fullText = new StringBuilder();
-            var responses = _model.GenerateContentStream(request, cancellationToken:cancellationToken);
+            var responses = _model.GenerateContentStream(request, cancellationToken: cancellationToken);
             await foreach (var response in responses)
             {
                 response.CheckResponse(true);
@@ -417,6 +420,7 @@ namespace Mscc.GenerativeAI
                 fullText.Append(response.Text);
                 yield return response;
             }
+
             _lastReceived = new() { Role = Role.Model, Text = fullText.ToString() };
             History.Add(_lastReceived);
         }
@@ -447,10 +451,10 @@ namespace Mscc.GenerativeAI
         }
 
         private (List<ContentResponse> history, ContentResponse content, GenerateContentResponse response) HandleAutomaticFunctionCalling(
-            GenerateContentResponse response, 
-            List<ContentResponse> history, 
-            GenerationConfig? generationConfig, 
-            List<SafetySetting>? safetySettings, 
+            GenerateContentResponse response,
+            List<ContentResponse> history,
+            GenerationConfig? generationConfig,
+            List<SafetySetting>? safetySettings,
             List<Tool>? tools)
         {
             throw new NotImplementedException();
@@ -493,7 +497,7 @@ namespace Mscc.GenerativeAI
                 throw new ValueErrorException(
                     $"Automatic function calling only works with 1 candidate, got {response.Candidates.Count}");
             }
-            
+
             var parts = response.Candidates[0].Content.Parts;
             var functionCalls = parts
                 .Where(x => x.FunctionCall != null)

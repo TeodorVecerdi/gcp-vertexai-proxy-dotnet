@@ -36,6 +36,7 @@
             CA1805; <!-- Do not initialize unnecessarily -->
             CA1812; <!-- Avoid uninstantiated internal classes -->
             CA1819; <!-- Properties should not return arrays -->
+            CA1822; <!-- Mark members static -->
             CA1848; <!-- Use the LoggerMessage delegates -->
             CA1852; <!-- Seal internal types -->
             CA1861; <!-- Prefer 'static readonly' fields over constant array arguments -->
