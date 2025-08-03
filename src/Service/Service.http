@@ -26,3 +26,18 @@ Content-Type: application/json
 
 ###
 
+POST {{Service_HostAddress}}/v1/projects/{{project}}/locations/{{region}}/publishers/google/models/{{model}}:streamGenerateContent
+Content-Type: application/json
+
+{
+    "model": "{{model}}",
+    "contents": [
+        { 
+            "role": "user",
+            "parts": [{ "text": "Hello there!" }]
+        }
+    ]
+}
+
+###
+

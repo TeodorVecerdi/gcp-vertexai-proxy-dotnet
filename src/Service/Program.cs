@@ -39,4 +39,12 @@ app.MapPost("/v1/projects/{project}/locations/{region}/publishers/google/models/
     .WithName("GenerateContent")
     .WithDescription("Generate content from a model");
 
+app.MapPost("/v1/projects/{project}/locations/{region}/publishers/google/models/{model}:streamGenerateContent", Ok<IAsyncEnumerable<GenerateContentResponse>> (string project, string region, string model, GenerateContentRequest request) => {
+        var vertexAi = new VertexAI(project, region: region);
+        var client = vertexAi.GenerativeModel(model);
+        return TypedResults.Ok(client.GenerateContentStream(request));
+    })
+    .WithName("StreamGenerateContent")
+    .WithDescription("Generate content from a model in streaming mode");
+
 app.Run();
