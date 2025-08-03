@@ -9,3 +9,20 @@ GET {{Service_HostAddress}}/Vertex%20AI
 Accept: application/json
 
 ###
+
+
+POST {{Service_HostAddress}}/v1/projects/{{project}}/locations/{{region}}/publishers/google/models/{{model}}:generateContent
+Content-Type: application/json
+
+{
+    "model": "{{model}}",
+    "contents": [
+        { 
+            "role": "user",
+            "parts": [{ "text": "Hello there!" }]
+        }
+    ]
+}
+
+###
+
