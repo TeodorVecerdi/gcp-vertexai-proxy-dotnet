@@ -1,7 +1,6 @@
 #pragma warning disable IL2026, IL3050
 
 using Mscc.GenerativeAI;
-using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -20,13 +19,13 @@ builder.Services.ConfigureHttpJsonOptions(options => {
     options.SerializerOptions.TypeInfoResolverChain.Insert(0, new GenerativeJsonSerializerContext());
 });
 
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options => options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0);
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment()) {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.UseSwaggerUI();
 }
 
 app.MapPost("/v1/projects/{project}/locations/{region}/publishers/google/models/{model}:generateContent", async (string project, string region, string model, GenerateContentRequest request) => {
