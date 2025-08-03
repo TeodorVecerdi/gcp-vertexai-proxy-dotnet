@@ -1,11 +1,11 @@
 @Service_HostAddress = http://localhost:5072
 
-GET {{Service_HostAddress}}/todos/
+GET {{Service_HostAddress}}/
 Accept: application/json
 
 ###
 
-GET {{Service_HostAddress}}/todos/1
+GET {{Service_HostAddress}}/Vertex%20AI
 Accept: application/json
 
 ###
