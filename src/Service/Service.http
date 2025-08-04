@@ -21,7 +21,12 @@ Content-Type: application/json
             "role": "user",
             "parts": [{ "text": "Hello there!" }]
         }
-    ]
+    ],
+    "generationConfig": {
+        "thinkingConfig": {
+            "thinkingBudget": 0
+        }
+    }
 }
 
 ###
@@ -36,7 +41,12 @@ Content-Type: application/json
             "role": "user",
             "parts": [{ "text": "Hello there!" }]
         }
-    ]
+    ],
+    "generationConfig": {
+        "thinkingConfig": {
+            "thinkingBudget": 0
+        }
+    }
 }
 
 ###
