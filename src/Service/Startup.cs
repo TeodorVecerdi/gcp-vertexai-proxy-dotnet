@@ -1,7 +1,6 @@
 ﻿using Google.Cloud.Functions.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +39,8 @@ public sealed class Startup : FunctionsStartup {
             Title = "Vertex AI Proxy API",
             Version = "v1",
         }));
+
+        services.AddHealthChecks();
     }
 
     public override void Configure(WebHostBuilderContext context, IApplicationBuilder app) {
@@ -70,6 +71,7 @@ public sealed class Startup : FunctionsStartup {
                     .WithName("StreamGenerateContent")
                     .WithDescription("Generate content from a model in streaming mode")
                     .Produces<IAsyncEnumerable<GenerateContentResponse>>();
+                endpoints.MapHealthChecks("/alive");
             }
         );
     }
