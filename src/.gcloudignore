@@ -1,0 +1,7 @@
+.gcloudignore
+.git
+.gitignore
+.vs
+.idea
+bin
+obj
