@@ -1,0 +1,83 @@
+swagger: '2.0'
+info:
+  title: Vertex AI Proxy API
+  description: Proxy to Vertex AI Gemini endpoints
+  version: 1.0.0
+schemes:
+  - https
+paths:
+  "/alive":
+    get:
+      description: Health check endpoint
+      operationId: healthCheck
+      x-google-backend:
+        address: {{FUNCTION_URL}}
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 30.0
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: Service is healthy
+          schema:
+            type: string
+            example: "Healthy"
+        '503':
+          description: Service is unhealthy
+  "/v1/projects/{project}/locations/{location}/publishers/google/models/{model}:generateContent":
+    post:
+      description: Proxy to generateContent
+      operationId: generateContent
+      parameters:
+        - name: project
+          in: path
+          type: string
+          required: true
+        - name: location
+          in: path
+          type: string
+          required: true
+        - name: model
+          in: path
+          type: string
+          required: true
+      x-google-backend:
+        address: {{FUNCTION_URL}}
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 60.0
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: Successful response
+  "/v1/projects/{project}/locations/{location}/publishers/google/models/{model}:streamGenerateContent":
+    post:
+      description: Proxy to streamGenerateContent
+      operationId: streamGenerateContent
+      parameters:
+        - name: project
+          in: path
+          type: string
+          required: true
+        - name: location
+          in: path
+          type: string
+          required: true
+        - name: model
+          in: path
+          type: string
+          required: true
+      x-google-backend:
+        address: {{FUNCTION_URL}}
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 300.0
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: Successful response
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: x-api-key
+    in: header
