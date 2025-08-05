@@ -19,6 +19,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mscc.GenerativeAI", "Mscc.GenerativeAI\Mscc.GenerativeAI.csproj", "{3480D68E-FD89-4877-ACFB-712E56DDFB52}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{EFF09776-07C8-431C-8448-7DBC3563801D}"
+	ProjectSection(SolutionItems) = preProject
+		..\deploy\openapi.yaml = ..\deploy\openapi.yaml
+		..\deploy\deploy-api-config.ps1 = ..\deploy\deploy-api-config.ps1
+		..\deploy\deploy-function.ps1 = ..\deploy\deploy-function.ps1
+		..\deploy\update-gateway-config.ps1 = ..\deploy\update-gateway-config.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
