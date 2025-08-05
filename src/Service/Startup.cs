@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Mscc.GenerativeAI;
+using Vecerdi.VertexAIProxy.Service.Configuration;
+using Vecerdi.VertexAIProxy.Service.Extensions;
+using Vecerdi.VertexAIProxy.Service.Services;
 
 namespace Vecerdi.VertexAIProxy.Service;
 
@@ -41,6 +44,10 @@ public sealed class Startup : FunctionsStartup {
         }));
 
         services.AddHealthChecks();
+
+        services.Configure<GenerativeModelPoolOptions>(context.Configuration.GetSection("GenerativeModelPool"));
+        services.AddSingleton<IVertexAIFactory, VertexAIFactory>();
+        services.AddSingleton<IGenerativeModelPool, GenerativeModelPool>();
     }
 
     public override void Configure(WebHostBuilderContext context, IApplicationBuilder app) {
@@ -53,25 +60,8 @@ public sealed class Startup : FunctionsStartup {
 
         app.UseRouting();
         app.UseEndpoints(endpoints => {
-                endpoints.MapPost("/v1/projects/{project}/locations/{region}/publishers/google/models/{model}:generateContent", async (string project, string region, string model, GenerateContentRequest request) => {
-                        var vertexAi = new VertexAI(project, region: region);
-                        var client = vertexAi.GenerativeModel(model);
-                        var result = await client.GenerateContent(request);
-                        return new List<GenerateContentResponse> { result };
-                    })
-                    .WithName("GenerateContent")
-                    .WithDescription("Generate content from a model")
-                    .Produces<List<GenerateContentResponse>>();
-
-                endpoints.MapPost("/v1/projects/{project}/locations/{region}/publishers/google/models/{model}:streamGenerateContent", (string project, string region, string model, GenerateContentRequest request) => {
-                        var vertexAi = new VertexAI(project, region: region);
-                        var client = vertexAi.GenerativeModel(model);
-                        return client.GenerateContentStream(request);
-                    })
-                    .WithName("StreamGenerateContent")
-                    .WithDescription("Generate content from a model in streaming mode")
-                    .Produces<IAsyncEnumerable<GenerateContentResponse>>();
                 endpoints.MapHealthChecks("/alive");
+                endpoints.MapVertexEndpoints();
             }
         );
     }
