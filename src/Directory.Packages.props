@@ -7,6 +7,7 @@
         <PackageVersion Include="System.Text.Json" Version="9.0.7"/>
         <PackageVersion Include="JsonSchema.Net.Generation" Version="5.0.0"/>
         <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.7"/>
-        <PackageVersion Include="Google.Cloud.Functions.Hosting" Version="3.0.1" />
+        <PackageVersion Include="Google.Cloud.Functions.Hosting" Version="3.0.1"/>
+        <PackageVersion Include="Google.Apis.Auth" Version="1.70.0"/>
     </ItemGroup>
 </Project>

@@ -53,6 +53,7 @@
             CA5394; <!-- Do not use insecure randomness -->
             CS1591; <!-- Missing XML comment for publicly visible type or member -->
             IDE0010; <!-- Add missing cases to switch statement -->
+            IDE0010; <!-- Add missing cases to switch statement -->
             IDE0022; <!-- Use expression body for methods -->
             IDE0037; <!-- Use inferred member name -->
             IDE0058; <!-- Remove unnecessary expression value -->
@@ -61,8 +62,8 @@
     </PropertyGroup>
 
     <!-- Artifacts -->
-    <PropertyGroup>
+    <!--<PropertyGroup>
         <UseArtifactsOutput>true</UseArtifactsOutput>
         <ArtifactsPath>$(MSBuildThisFileDirectory)../artifacts/</ArtifactsPath>
-    </PropertyGroup>
+    </PropertyGroup>-->
 </Project>

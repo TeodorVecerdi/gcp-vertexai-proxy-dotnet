@@ -5,7 +5,7 @@ Accept: application/json
 
 ###
 
-GET {{Service_HostAddress}}/Vertex%20AI
+GET {{Service_HostAddress}}/alive
 Accept: application/json
 
 ###
