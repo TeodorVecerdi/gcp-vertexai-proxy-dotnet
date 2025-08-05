@@ -39,6 +39,7 @@
         <PackageReference Include="JsonSchema.Net.Generation"/>
         <PackageReference Include="Microsoft.Extensions.Logging"/>
         <PackageReference Include="System.Text.Json"/>
+        <PackageReference Include="Google.Apis.Auth"/>
     </ItemGroup>
 
     <ItemGroup>

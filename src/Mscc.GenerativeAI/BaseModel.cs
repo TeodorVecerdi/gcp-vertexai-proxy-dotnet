@@ -187,11 +187,8 @@ namespace Mscc.GenerativeAI
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "gcloud",
                     "application_default_credentials.json");
             var credentials = GetCredentialsFromFile(credentialsFile);
-            AccessToken = _accessToken ??
-                          GetAccessTokenFromAdc();
-            ProjectId = projectId ??
-                        credentials?.ProjectId ??
-                        _projectId;
+            AccessToken = _accessToken ?? Environment.GetEnvironmentVariable("VERTEX_ACCESS_TOKEN") ?? GetAccessTokenFromAdc();
+            ProjectId = projectId ?? credentials?.ProjectId ?? _projectId;
             AccessToken = _accessToken;
             ProjectId = projectId ?? _projectId;
             _region = region ?? _region;
