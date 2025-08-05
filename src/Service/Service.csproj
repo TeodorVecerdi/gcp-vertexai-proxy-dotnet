@@ -2,12 +2,13 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
+        <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
         <OutputType>Exe</OutputType>
         <InvariantGlobalization>true</InvariantGlobalization>
-        <PublishAot>true</PublishAot>
         <RootNamespace>Vecerdi.VertexAIProxy.Service</RootNamespace>
-
+        
         <EnableRequestDelegateGenerator>true</EnableRequestDelegateGenerator>
+        <InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Microsoft.AspNetCore.Http.Generated</InterceptorsPreviewNamespaces>
         <InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.AspNetCore.Http.Generated</InterceptorsNamespaces>
     </PropertyGroup>
 
