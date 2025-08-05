@@ -101,7 +101,7 @@ namespace Mscc.GenerativeAI
         /// <remarks>
         /// The value can only be set or modified before the first request is made.
         /// </remarks>
-        public string? ProjectId { set => _projectId = value; }
+        public string? ProjectId { get => _projectId; set => _projectId = value; }
 
         protected virtual void AddProjectIdHeader(HttpRequestMessage request)
         {
