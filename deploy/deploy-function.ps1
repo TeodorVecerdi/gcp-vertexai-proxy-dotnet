@@ -35,6 +35,7 @@ try {
         "--service-account", $ServiceAccount,
         "--project", $Project,
         "--entry-point", $EntryPoint,
+        "--no-allow-unauthenticated",
         "--set-build-env-vars=GOOGLE_BUILDABLE=Service"
     )
     & gcloud @deployArgs
