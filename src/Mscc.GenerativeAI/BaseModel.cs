@@ -80,7 +80,7 @@ namespace Mscc.GenerativeAI
         /// <summary>
         /// Sets the access token to use for the request.
         /// </summary>
-        public string? AccessToken { set => _accessToken = value; }
+        public string? AccessToken { get => _accessToken; set => _accessToken = value; }
 
         protected virtual void AddAccessTokenHeader(HttpRequestMessage request)
         {

@@ -7,18 +7,9 @@ public interface IVertexAIFactory {
     Task<VertexAI> CreateAsync(string projectId, string region);
 }
 
-public sealed class VertexAIFactory : IVertexAIFactory {
-    private string? m_CachedAccessToken;
-    private DateTime m_TokenExpiry = DateTime.MinValue;
-
+public sealed class VertexAIFactory(IAccessTokenProvider accessTokenProvider) : IVertexAIFactory {
     public async Task<VertexAI> CreateAsync(string projectId, string region) {
-        if (m_CachedAccessToken == null || DateTime.UtcNow >= m_TokenExpiry.AddMinutes(-5)) {
-            var credential = await GoogleCredential.GetApplicationDefaultAsync();
-            m_CachedAccessToken = await credential.UnderlyingCredential.GetAccessTokenForRequestAsync();
-            m_TokenExpiry = DateTime.UtcNow.AddMinutes(10);
-        }
-
-        Environment.SetEnvironmentVariable("VERTEX_ACCESS_TOKEN", m_CachedAccessToken);
+        Environment.SetEnvironmentVariable("VERTEX_ACCESS_TOKEN", await accessTokenProvider.GetAccessTokenAsync());
         return new VertexAI(projectId, region: region);
     }
 }

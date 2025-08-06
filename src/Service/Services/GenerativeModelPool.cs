@@ -17,9 +17,11 @@ public sealed class GenerativeModelPool : IGenerativeModelPool, IDisposable {
     private readonly Timer m_CleanupTimer;
     private readonly ILogger<GenerativeModelPool> m_Logger;
     private readonly GenerativeModelPoolOptions m_Options;
+    private readonly IAccessTokenProvider m_AccessTokenProvider;
     private readonly IVertexAIFactory m_VertexAIFactory;
 
-    public GenerativeModelPool(IVertexAIFactory vertexAIFactory, IOptions<GenerativeModelPoolOptions> options, ILogger<GenerativeModelPool> logger) {
+    public GenerativeModelPool(IAccessTokenProvider accessTokenProvider, IVertexAIFactory vertexAIFactory, IOptions<GenerativeModelPoolOptions> options, ILogger<GenerativeModelPool> logger) {
+        m_AccessTokenProvider = accessTokenProvider;
         m_VertexAIFactory = vertexAIFactory;
         m_Options = options.Value;
         m_Logger = logger;
@@ -42,6 +44,7 @@ public sealed class GenerativeModelPool : IGenerativeModelPool, IDisposable {
                     continue;
                 pooledModel.UpdateLastUsed();
                 m_Logger.LogDebug("Retrieved model {Model} from pool for {Project}/{Region}", model, project, region);
+                pooledModel.Model.AccessToken = await m_AccessTokenProvider.GetAccessTokenAsync();
                 return pooledModel.Model;
             }
 
@@ -49,7 +52,7 @@ public sealed class GenerativeModelPool : IGenerativeModelPool, IDisposable {
             m_Logger.LogDebug("Creating new model {Model} for {Project}/{Region}", model, project, region);
             var vertexAI = await m_VertexAIFactory.CreateAsync(project, region);
             var generativeModel = vertexAI.GenerativeModel(model);
-
+            generativeModel.AccessToken = await m_AccessTokenProvider.GetAccessTokenAsync();
             return generativeModel;
         } catch {
             semaphore.Release();

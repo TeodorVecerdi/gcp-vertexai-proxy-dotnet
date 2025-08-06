@@ -46,6 +46,7 @@ public sealed class Startup : FunctionsStartup {
         services.AddHealthChecks();
 
         services.Configure<GenerativeModelPoolOptions>(context.Configuration.GetSection("GenerativeModelPool"));
+        services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
         services.AddSingleton<IVertexAIFactory, VertexAIFactory>();
         services.AddSingleton<IGenerativeModelPool, GenerativeModelPool>();
     }
