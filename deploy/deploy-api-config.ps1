@@ -1,5 +1,5 @@
 param(
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [string]$Version,
 
     [string]$OpenApiTemplate = "./openapi.template.yaml",
@@ -37,7 +37,8 @@ try {
     }
     
     Write-Host "Function URL: $functionUrl" -ForegroundColor Yellow
-} catch {
+}
+catch {
     Write-Error "Error getting function URL: $_"
     exit 1
 }
@@ -52,7 +53,8 @@ try {
     $specContent | Out-File -FilePath $tempOpenApiSpec -Encoding UTF8
     
     Write-Host "Temporary OpenAPI spec created: $tempOpenApiSpec" -ForegroundColor Yellow
-} catch {
+}
+catch {
     Write-Error "Error creating OpenAPI spec from template: $_"
     exit 1
 }
@@ -74,14 +76,13 @@ try {
         Write-Host ""
         Write-Host "Next step: Update the gateway to use this config with:" -ForegroundColor Cyan
         Write-Host "  .\update-gateway-config.ps1 -Version $Version" -ForegroundColor Yellow
-    } else {
+    }
+    else {
         Write-Error "Failed to create API config"
         throw "API config creation failed"
     }
-} catch {
-    Write-Error "Error creating API config: $_"
-    throw
-} finally {
+}
+finally {
     # Ensure temporary file is removed
     Write-Host "Cleaning up temporary file..." -ForegroundColor Green
     if (Test-Path $tempOpenApiSpec) {
