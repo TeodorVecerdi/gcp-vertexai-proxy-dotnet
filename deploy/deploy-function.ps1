@@ -4,8 +4,7 @@ param(
     [string]$FunctionName = "mdl-vertex-proxy-function",
     [string]$ServiceAccount = "mdl-vertex-proxy-sa@vecerdi.iam.gserviceaccount.com",
     [string]$EntryPoint = "Vecerdi.VertexAIProxy.Service.Function",
-    [string]$SourcePath = ".",
-    [switch]$Watch
+    [string]$SourcePath = "."
 )
 
 $ErrorActionPreference = "Stop"
