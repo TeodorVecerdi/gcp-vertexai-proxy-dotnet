@@ -9,7 +9,7 @@ public interface IVertexAIFactory {
 
 public sealed class VertexAIFactory(IAccessTokenProvider accessTokenProvider) : IVertexAIFactory {
     public async Task<VertexAI> CreateAsync(string projectId, string region) {
-        Environment.SetEnvironmentVariable("VERTEX_ACCESS_TOKEN", await accessTokenProvider.GetAccessTokenAsync());
+        Environment.SetEnvironmentVariable("GOOGLE_ACCESS_TOKEN", await accessTokenProvider.GetAccessTokenAsync());
         return new VertexAI(projectId, region: region);
     }
 }

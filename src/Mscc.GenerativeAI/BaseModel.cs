@@ -162,7 +162,7 @@ namespace Mscc.GenerativeAI
             GenerativeAIExtensions.ReadDotEnv();
             ApiKey = Environment.GetEnvironmentVariable("GOOGLE_API_KEY") ??
                      Environment.GetEnvironmentVariable("GEMINI_API_KEY");
-            AccessToken = Environment.GetEnvironmentVariable("GOOGLE_ACCESS_TOKEN"); // ?? GetAccessTokenFromAdc();
+            AccessToken = Environment.GetEnvironmentVariable("GOOGLE_ACCESS_TOKEN") ?? GetAccessTokenFromAdc();
             Model = Environment.GetEnvironmentVariable("GOOGLE_AI_MODEL") ??
                     GenerativeAI.Model.Gemini15Pro;
             _projectId = Environment.GetEnvironmentVariable("GOOGLE_PROJECT_ID") ??
@@ -187,7 +187,7 @@ namespace Mscc.GenerativeAI
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "gcloud",
                     "application_default_credentials.json");
             var credentials = GetCredentialsFromFile(credentialsFile);
-            AccessToken = _accessToken ?? Environment.GetEnvironmentVariable("VERTEX_ACCESS_TOKEN") ?? GetAccessTokenFromAdc();
+            AccessToken = _accessToken ?? Environment.GetEnvironmentVariable("GOOGLE_ACCESS_TOKEN") ?? GetAccessTokenFromAdc();
             ProjectId = projectId ?? credentials?.ProjectId ?? _projectId;
             AccessToken = _accessToken;
             ProjectId = projectId ?? _projectId;
