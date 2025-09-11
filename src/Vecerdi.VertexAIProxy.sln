@@ -21,10 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mscc.GenerativeAI", "Mscc.G
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deployment", "Deployment", "{EFF09776-07C8-431C-8448-7DBC3563801D}"
 	ProjectSection(SolutionItems) = preProject
-		..\deploy\openapi.yaml = ..\deploy\openapi.yaml
 		..\deploy\deploy-api-config.ps1 = ..\deploy\deploy-api-config.ps1
 		..\deploy\deploy-function.ps1 = ..\deploy\deploy-function.ps1
 		..\deploy\update-gateway-config.ps1 = ..\deploy\update-gateway-config.ps1
+		..\deploy\openapi.template.yaml = ..\deploy\openapi.template.yaml
 	EndProjectSection
 EndProject
 Global
