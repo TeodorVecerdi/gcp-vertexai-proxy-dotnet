@@ -1,5 +1,4 @@
-﻿using Google.Apis.Auth.OAuth2;
-using Mscc.GenerativeAI;
+﻿using Mscc.GenerativeAI;
 
 namespace Vecerdi.VertexAIProxy.Service.Services;
 
