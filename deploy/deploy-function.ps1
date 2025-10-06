@@ -35,6 +35,10 @@ try {
         "--project", $Project,
         "--entry-point", $EntryPoint,
         "--no-allow-unauthenticated",
+        "--concurrency", "10",
+        "--timeout", "180s",
+        "--cpu", "1",
+        "--memory", "256MB",
         "--set-build-env-vars=GOOGLE_BUILDABLE=Service"
     )
     & gcloud @deployArgs
